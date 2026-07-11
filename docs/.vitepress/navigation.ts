@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import type { DefaultTheme } from 'vitepress';
 
 export interface PhaseDoc {
-  phase: number | null;
+  phase: number;
   order: number;
   title: string;
   shortTitle: string;
@@ -13,7 +13,7 @@ export interface PhaseDoc {
 
 export interface PhaseGroup {
   id: string;
-  phase: number | null;
+  phase: number;
   sortOrder: number;
   text: string;
   activeMatch: string;
@@ -22,13 +22,10 @@ export interface PhaseGroup {
 
 const docsRoot = fileURLToPath(new URL('..', import.meta.url));
 const phaseDirectoryPattern = /^ch-(\d+)([a-z]?)$/;
-const appendixDirectoryPattern = /^appendix-([a-z])$/;
 const documentFilePattern = /^(\d+)-.+\.md$/;
 const headingPattern = /^#\s+(.+?)\s*$/m;
 
 const PHASE_LABELS: Record<string, string> = {};
-
-const APPENDIX_LABELS: Record<string, string> = {};
 
 function phaseLabel(phaseId: string): string {
   return PHASE_LABELS[phaseId] ?? `Phase ${phaseId}`;
@@ -45,35 +42,21 @@ function phaseSortOrder(phase: number, suffix: string): number {
 function directoryConfig(name: string): Omit<PhaseGroup, 'docs'> | null {
   const phaseMatch = name.match(phaseDirectoryPattern);
 
-  if (phaseMatch) {
-    const phase = Number(phaseMatch[1]);
-    const suffix = phaseMatch[2] ?? '';
-    const phaseId = `${phase}${suffix}`;
-
-    return {
-      id: name,
-      phase,
-      sortOrder: phaseSortOrder(phase, suffix),
-      text: phaseLabel(phaseId),
-      activeMatch: `/${name}/`,
-    };
+  if (!phaseMatch) {
+    return null;
   }
 
-  const appendixMatch = name.match(appendixDirectoryPattern);
+  const phase = Number(phaseMatch[1]);
+  const suffix = phaseMatch[2] ?? '';
+  const phaseId = `${phase}${suffix}`;
 
-  if (appendixMatch) {
-    const appendix = appendixMatch[1];
-
-    return {
-      id: name,
-      phase: null,
-      sortOrder: 1000 + appendix.charCodeAt(0),
-      text: APPENDIX_LABELS[appendix] ?? `부록 ${appendix.toUpperCase()}`,
-      activeMatch: `/${name}/`,
-    };
-  }
-
-  return null;
+  return {
+    id: name,
+    phase,
+    sortOrder: phaseSortOrder(phase, suffix),
+    text: phaseLabel(phaseId),
+    activeMatch: `/${name}/`,
+  };
 }
 
 function trimTitle(title: string): string {

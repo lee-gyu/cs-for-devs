@@ -22,9 +22,8 @@
 | 챕터 16 — 데이터 모델링과 데이터베이스 활용 | 2 | ⬜ 예정 |
 | 챕터 17 — 대규모 데이터 처리 | 2 | ⬜ 예정 |
 | 챕터 18 — 검색·마이닝·지식 표현 | 3 | ⬜ 예정 |
-| 부록 A — 특수 목적 시스템 | 2 | ⬜ 예정 |
 
 ## TODO
 
-- [ ] 챕터 1 기획 문서(`plan/ch-1.md`) 작성 후 `docs/ch-1/` 문서 4편 집필
-- [ ] 첫 챕터 디렉터리 생성 시 `docs/.vitepress/navigation.ts`의 `PHASE_LABELS`·`APPENDIX_LABELS`에 챕터·부록 레이블 채우기 (저장소 운영 지침 적용)
+- [ ] 챕터 1 기획([plan/ch-1.md](plan/ch-1.md))에 따라 `docs/ch-1/` 문서 4편 집필
+- [ ] 첫 챕터 디렉터리 생성 시 `docs/.vitepress/navigation.ts`의 `PHASE_LABELS`에 챕터 레이블 채우기 (저장소 운영 지침 적용)
