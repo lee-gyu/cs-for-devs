@@ -1,0 +1,26 @@
+{
+  "name": "@lee-gyu/cs-for-devs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "engines": {
+    "node": ">=24.14.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "typescript": "^5.9.3",
+    "vitepress": "^1.6.4"
+  },
+  "packageManager": "pnpm@11.10.0"
+}

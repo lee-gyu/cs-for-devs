@@ -1,0 +1,164 @@
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { basename, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import type { DefaultTheme } from 'vitepress';
+
+export interface PhaseDoc {
+  phase: number | null;
+  order: number;
+  title: string;
+  shortTitle: string;
+  link: string;
+}
+
+export interface PhaseGroup {
+  id: string;
+  phase: number | null;
+  sortOrder: number;
+  text: string;
+  activeMatch: string;
+  docs: PhaseDoc[];
+}
+
+const docsRoot = fileURLToPath(new URL('..', import.meta.url));
+const phaseDirectoryPattern = /^ch-(\d+)([a-z]?)$/;
+const appendixDirectoryPattern = /^appendix-([a-z])$/;
+const documentFilePattern = /^(\d+)-.+\.md$/;
+const headingPattern = /^#\s+(.+?)\s*$/m;
+
+const PHASE_LABELS: Record<string, string> = {};
+
+const APPENDIX_LABELS: Record<string, string> = {};
+
+function phaseLabel(phaseId: string): string {
+  return PHASE_LABELS[phaseId] ?? `Phase ${phaseId}`;
+}
+
+function phaseSortOrder(phase: number, suffix: string): number {
+  if (!suffix) {
+    return phase;
+  }
+
+  return phase + (suffix.charCodeAt(0) - 'a'.charCodeAt(0) + 1) / 100;
+}
+
+function directoryConfig(name: string): Omit<PhaseGroup, 'docs'> | null {
+  const phaseMatch = name.match(phaseDirectoryPattern);
+
+  if (phaseMatch) {
+    const phase = Number(phaseMatch[1]);
+    const suffix = phaseMatch[2] ?? '';
+    const phaseId = `${phase}${suffix}`;
+
+    return {
+      id: name,
+      phase,
+      sortOrder: phaseSortOrder(phase, suffix),
+      text: phaseLabel(phaseId),
+      activeMatch: `/${name}/`,
+    };
+  }
+
+  const appendixMatch = name.match(appendixDirectoryPattern);
+
+  if (appendixMatch) {
+    const appendix = appendixMatch[1];
+
+    return {
+      id: name,
+      phase: null,
+      sortOrder: 1000 + appendix.charCodeAt(0),
+      text: APPENDIX_LABELS[appendix] ?? `부록 ${appendix.toUpperCase()}`,
+      activeMatch: `/${name}/`,
+    };
+  }
+
+  return null;
+}
+
+function trimTitle(title: string): string {
+  return title.split(/\s+[—-]\s+|:\s+/)[0] ?? title;
+}
+
+function readDocumentTitle(filePath: string): string {
+  const content = readFileSync(filePath, 'utf8');
+  const match = content.match(headingPattern);
+
+  if (!match) {
+    throw new Error(`Missing first-level heading: ${filePath}`);
+  }
+
+  return match[1].trim();
+}
+
+export function getPhaseGroups(): PhaseGroup[] {
+  if (!existsSync(docsRoot)) {
+    return [];
+  }
+
+  return readdirSync(docsRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => {
+      const config = directoryConfig(entry.name);
+      return config ? { name: entry.name, config } : null;
+    })
+    .filter((entry): entry is { name: string; config: Omit<PhaseGroup, 'docs'> } => entry !== null)
+    .sort((a, b) => a.config.sortOrder - b.config.sortOrder)
+    .map(({ name, config }) => {
+      const phasePath = join(docsRoot, name);
+      const docs = readdirSync(phasePath, { withFileTypes: true })
+        .filter((entry) => entry.isFile() && entry.name.endsWith('.md'))
+        .map((entry) => {
+          const match = entry.name.match(documentFilePattern);
+
+          if (!match) {
+            throw new Error(
+              `Phase document filename must start with a numeric prefix: ${join(name, entry.name)}`,
+            );
+          }
+
+          const order = Number(match[1]);
+          const title = readDocumentTitle(join(phasePath, entry.name));
+          const slug = basename(entry.name, '.md');
+
+          return {
+            phase: config.phase,
+            order,
+            title,
+            shortTitle: trimTitle(title),
+            link: `/${name}/${slug}`,
+          };
+        })
+        .sort((a, b) => a.order - b.order);
+
+      return {
+        ...config,
+        docs,
+      };
+    })
+    .filter((group) => group.docs.length > 0);
+}
+
+export function buildNav(): DefaultTheme.NavItem[] {
+  const documentItems: DefaultTheme.NavItemWithLink[] = getPhaseGroups().map((group) => ({
+    text: group.text,
+    link: group.docs[0].link,
+    activeMatch: group.activeMatch,
+  }));
+
+  return [
+    { text: '홈', link: '/' },
+    { text: '문서', items: documentItems }
+  ];
+}
+
+export function buildSidebar(): DefaultTheme.SidebarItem[] {
+  return getPhaseGroups().map((group) => ({
+    text: group.text,
+    collapsed: false,
+    items: group.docs.map((doc) => ({
+      text: doc.shortTitle,
+      link: doc.link,
+    })),
+  }));
+}
