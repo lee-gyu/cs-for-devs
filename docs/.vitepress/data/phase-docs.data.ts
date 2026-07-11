@@ -1,7 +1,7 @@
 import { getPhaseGroups } from '../navigation';
 
 export default {
-  watch: 'phase-*/*.md',
+  watch: 'ch-*/*.md',
   load() {
     return getPhaseGroups();
   },

@@ -25,7 +25,9 @@ const phaseDirectoryPattern = /^ch-(\d+)([a-z]?)$/;
 const documentFilePattern = /^(\d+)-.+\.md$/;
 const headingPattern = /^#\s+(.+?)\s*$/m;
 
-const PHASE_LABELS: Record<string, string> = {};
+const PHASE_LABELS: Record<string, string> = {
+  '1': '챕터 1 — 자료구조와 알고리즘',
+};
 
 function phaseLabel(phaseId: string): string {
   return PHASE_LABELS[phaseId] ?? `Phase ${phaseId}`;
