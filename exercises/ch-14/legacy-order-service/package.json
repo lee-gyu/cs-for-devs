@@ -1,0 +1,17 @@
+{
+  "name": "legacy-order-service",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "payment-stub": "node src/payment-stub.ts",
+    "demo": "node src/demo.ts",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage"
+  },
+  "devDependencies": {
+    "fast-check": "^4.0.0"
+  }
+}

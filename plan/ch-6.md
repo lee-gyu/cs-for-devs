@@ -33,7 +33,7 @@
 | 바이트코드 VM 구조, JIT | ch-5 `03-interpreters-and-jit.md` | native 호출 규약과 VM 프레임의 대응 관계만 연결 |
 | 캐시·메모리 계층이 할당자·GC 설계에 미치는 영향 | ch-7 `02-memory-hierarchy.md` | bump allocation·copying GC의 지역성 이점을 **현상으로** 언급, 하드웨어 원인은 위임 |
 | 가상 메모리, `brk`/`mmap`, 페이지 폴트, copy-on-write | ch-8 `02-virtual-memory.md` | 할당자가 커널에서 메모리를 받아오는 경계(RSS와 heap used가 다른 이유)까지만 |
-| 소유권의 타입 이론적 기반(선형·아핀 타입) | ch-4 `02-type-systems.md` | 이름만 연결 |
+| 소유권의 타입 이론적 기반(선형·아핀 타입) | ch-4 `03-abstraction-and-subtyping.md` | 자원 사용을 타입으로 제한하는 확장이라는 이름과 연결만 제시 |
 | 메모리 안전 취약점의 공격 기법 | (커리큘럼 밖) | UAF·overflow가 왜 취약점이 되는지 원인 구조까지만 |
 
 ### 다루지 않기로 결정한 것
