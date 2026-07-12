@@ -1,6 +1,6 @@
 # 챕터 1 실습 — 자료구조 구현과 복잡도 예측·실측 대조
 
-[ROADMAP](../../ROADMAP.md) 챕터 1의 산출물인 **"핵심 자료구조를 직접 구현하고, 점근 복잡도 예측과 실측(캐시 효과 포함)의 차이를 벤치마크 리포트로 정리한다"**를 수행하는 실습이다. [plan/ch-1.md](../../plan/ch-1.md) §5 기획을 기준으로 하며, 1.0 인트로의 문제의식과 챕터 1 본문 4편([1.1](../../docs/ch-1/01-complexity-analysis.md), [1.2](../../docs/ch-1/02-data-structures-in-memory.md), [1.3](../../docs/ch-1/03-algorithm-design-paradigms.md), [1.4](../../docs/ch-1/04-graph-theory-and-algorithms.md))의 동작 모델을 전제로 한다. 인트로가 작성되기 전에는 [ROADMAP의 0번 기획](../../ROADMAP.md)을 기준으로 삼는다.
+[ROADMAP](../../ROADMAP.md) 챕터 1의 산출물인 **"핵심 자료구조를 직접 구현하고, 점근 복잡도 예측과 실측(캐시 효과 포함)의 차이를 벤치마크 리포트로 정리한다"**를 수행하는 실습이다. [plan/ch-1.md](../../plan/ch-1.md) §5 기획을 기준으로 하며, [1.0 인트로](../../docs/ch-1/00-introduction.md)의 문제의식과 챕터 1 본문 4편([1.1](../../docs/ch-1/01-complexity-analysis.md), [1.2](../../docs/ch-1/02-data-structures-in-memory.md), [1.3](../../docs/ch-1/03-algorithm-design-paradigms.md), [1.4](../../docs/ch-1/04-graph-theory-and-algorithms.md))의 동작 모델을 전제로 한다.
 
 이 실습의 핵심 규율은 하나다. **측정하기 전에 예측을 글로 남긴다.** 각 시나리오마다 점근 복잡도와 예상 배율(방향과 자릿수)을 먼저 표로 쓰고, 실측이 예측과 갈린 지점을 구현 내부의 계측 카운터와 메모리 접근 패턴으로 설명한다. 예측 없이 측정만 하면 어떤 숫자가 나와도 "그렇구나"로 끝나고, 갈린 지점이야말로 [1.1](../../docs/ch-1/01-complexity-analysis.md)이 말하는 점근 표기가 버린 상수 인자의 실체다.
 
