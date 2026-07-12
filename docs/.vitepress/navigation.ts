@@ -26,6 +26,7 @@ const documentFilePattern = /^(\d+)-.+\.md$/;
 const headingPattern = /^#\s+(.+?)\s*$/m;
 
 const PHASE_LABELS: Record<string, string> = {
+  '0': 'Part 0 — CS를 배우는 이유',
   '1': '챕터 1 — 자료구조와 알고리즘',
   '5': '챕터 5 — 컴파일러와 인터프리터',
   '7': '챕터 7 — 컴퓨터 구조',
