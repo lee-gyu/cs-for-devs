@@ -31,6 +31,7 @@ const PHASE_LABELS: Record<string, string> = {
   '5': '챕터 5 — 컴파일러와 인터프리터',
   '7': '챕터 7 — 컴퓨터 구조',
   '8': '챕터 8 — 운영체제',
+  '9': '챕터 9 — 네트워크',
 };
 
 function phaseLabel(phaseId: string): string {
