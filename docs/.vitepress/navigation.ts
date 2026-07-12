@@ -27,6 +27,7 @@ const headingPattern = /^#\s+(.+?)\s*$/m;
 
 const PHASE_LABELS: Record<string, string> = {
   '1': '챕터 1 — 자료구조와 알고리즘',
+  '7': '챕터 7 — 컴퓨터 구조',
   '8': '챕터 8 — 운영체제',
 };
 
