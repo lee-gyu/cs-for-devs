@@ -1,6 +1,6 @@
 # 챕터 8 실습 — 컨텍스트 스위치 비용과 I/O 모델별 처리량 측정
 
-[ROADMAP](../../ROADMAP.md) 챕터 8의 산출물인 **"컨텍스트 스위치 비용과 I/O 모델(블로킹, epoll 계열)별 처리량을 직접 측정하고 시스템 지표로 차이의 원인을 설명한다"**를 수행하는 실습이다. [plan/ch-8.md](../../plan/ch-8.md) §5 기획을 기준으로 하며, 측정 대상의 동작 모델은 챕터 8 문서 3편([8.1](../../docs/ch-8/01-processes-and-scheduling.md), [8.2](../../docs/ch-8/02-virtual-memory.md), [8.3](../../docs/ch-8/03-file-systems-and-io.md))을 전제로 한다.
+[ROADMAP](../../ROADMAP.md) 챕터 8의 산출물인 **"컨텍스트 스위치 비용과 I/O 모델(블로킹, epoll 계열)별 처리량을 직접 측정하고 시스템 지표로 차이의 원인을 설명한다"**를 수행하는 실습이다. [plan/ch-8.md](../../plan/ch-8.md) §5 기획을 기준으로 하며, [8.0 인트로](../../docs/ch-8/00-introduction.md)의 문제의식과 챕터 8 본문 3편([8.1](../../docs/ch-8/01-processes-and-scheduling.md), [8.2](../../docs/ch-8/02-virtual-memory.md), [8.3](../../docs/ch-8/03-file-systems-and-io.md))의 동작 모델을 전제로 한다.
 
 ## 학습 목표
 
