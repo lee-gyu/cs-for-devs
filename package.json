@@ -22,5 +22,8 @@
     "typescript": "^5.9.3",
     "vitepress": "^1.6.4"
   },
-  "packageManager": "pnpm@11.10.0"
+  "packageManager": "pnpm@11.10.0",
+  "dependencies": {
+    "@fontsource/nanum-gothic-coding": "^5.2.8"
+  }
 }

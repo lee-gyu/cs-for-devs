@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@fontsource/nanum-gothic-coding':
+        specifier: ^5.2.8
+        version: 5.2.8
     devDependencies:
       '@types/node':
         specifier: ^24.13.2
@@ -273,6 +277,9 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource/nanum-gothic-coding@5.2.8':
+    resolution: {integrity: sha512-K4bfKS8lSnVvAcGq0mbHKSddxalm+wgmQxhggbmdK/76RRrf72SOWPAWyESuu/m1pXgNmM8ekhuCY7yADBGfqA==}
 
   '@iconify-json/simple-icons@1.2.89':
     resolution: {integrity: sha512-hRaCY5s2G5oWAIhc4LCGYn6g6RrwLL4zhoLOT+KUO3joVCxVlZKA+839bv/47Nbe9/ZD4UA6dznZ4XPYcI53wA==}
@@ -1051,6 +1058,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
+
+  '@fontsource/nanum-gothic-coding@5.2.8': {}
 
   '@iconify-json/simple-icons@1.2.89':
     dependencies:
