@@ -43,7 +43,7 @@ Part 순서는 이론에서 응용으로 향하는 권장 순서일 뿐 Part 간
 | | 8 | 운영체제 | 컨텍스트 스위치·I/O 모델 비용 측정 리포트 |
 | | 9 | 네트워크 | 패킷 캡처 기반 TCP·HTTP 동작 분석 리포트 |
 | | 10 | 분산 시스템 | 리더 선출·로그 복제 시뮬레이터 |
-| | 11 | 데이터베이스 시스템 내부 | 미니 KV 스토어와 격리 수준 실험 리포트 |
+| | 11 | 데이터베이스 시스템 내부와 실행 진단 | 미니 스토리지 실험과 실행 계획·동시성 진단 리포트 |
 | | 12 | 가상화와 클라우드 | namespace·cgroup으로 만드는 수제 컨테이너 |
 | 4. 소프트웨어 공학 | 13 | 요구사항과 설계 | 품질 속성 시나리오와 ADR 작성 |
 | | 14 | 품질과 신뢰성 | 테스트 하네스 구축과 SLO·에러 버짓 설계 |
@@ -257,20 +257,30 @@ Part 순서는 이론에서 응용으로 향하는 권장 순서일 뿐 Part 간
 
 **실습 과제**: 리더 선출과 로그 복제를 시뮬레이션하는 미니 Raft 상태 머신을 구현하고 네트워크 분단 시나리오에서 동작을 검증한다.
 
-#### 챕터 11 — 데이터베이스 시스템 내부 (`docs/ch-11/`)
+#### 챕터 11 — 데이터베이스 시스템 내부와 실행 진단 (`docs/ch-11/`)
 
 **학습 목표**
 
-- B-트리와 LSM 트리의 구조 차이를 읽기·쓰기 패턴별 성능 특성으로 연결한다.
-- 격리 수준별로 발생 가능한 이상 현상을 식별하고 MVCC의 동작으로 설명한다.
+- 레코드·페이지·버퍼 풀과 인덱스의 배치·상태 전이로 I/O·캐시·읽기·쓰기·공간 비용을 설명한다.
+- 통계·카디널리티·비용 모델과 물리 연산자를 근거로 실행 계획의 선택과 오판을 진단한다.
+- 락·MVCC·격리 수준과 WAL·checkpoint·redo/undo를 근거로 로컬 트랜잭션의 동시성·내구성 경계를 판단한다.
+- 복제·shard 배치·여러 shard의 atomic commit이 읽기 일관성, 확장성, fan-out, in-doubt·blocking과 장애 복구 경계를 바꾸는 과정을 설명한다.
+- 데이터 관계, 접근 패턴, 일관성·무결성, 확장과 운영 비용을 근거로 relational·key-value·wide-column·document·graph·search 계열의 적합성을 판단한다.
 
 | # | 문서 | 주요 내용 |
 |---|------|----------|
-| 0 | `docs/ch-11/00-introduction.md` | SQL과 단순한 읽기·쓰기 API 아래 저장·내구성·동시성 비용이 숨어 있는 이유, 워크로드에서 엔진과 보장을 판단하는 학습 지도 |
-| 1 | `docs/ch-11/01-storage-engines.md` | B-트리와 LSM 트리, WAL, 페이지 구조와 버퍼 풀 |
-| 2 | `docs/ch-11/02-transactions-and-concurrency.md` | ACID의 실제 구현, 격리 수준과 이상 현상, MVCC, 장애 복구 |
+| 0 | `docs/ch-11/00-introduction.md` | SQL 요청의 전체 경로, 정확성·비용·격리·내구성 계약, 공통 주문 워크로드와 챕터 판단 루프 |
+| 1 | `docs/ch-11/01-storage-layout-and-buffer-management.md` | 레코드·슬롯 페이지·heap file, 행·열 배치의 경계, 버퍼 풀의 pin·dirty·eviction·flush, 순차·임의 I/O |
+| 2 | `docs/ch-11/02-indexes-and-storage-engines.md` | B+트리·해시, B+트리와 LSM의 비용 구조, primary/secondary·clustered/unclustered, 복합·covering 인덱스, page split·compaction과 증폭 |
+| 3 | `docs/ch-11/03-query-processing-and-execution-plans.md` | parse·bind·rewrite, 논리·물리 계획, scan·sort·aggregate·join, iterator/vectorized 실행, 통계·선택도·카디널리티·비용·조인 순서, 실행 계획 진단 |
+| 4 | `docs/ch-11/04-transactions-and-concurrency-control.md` | 트랜잭션 스케줄과 이상 현상, lock과 latch, 2PL·deadlock, MVCC visibility·snapshot·version cleanup, 격리 수준 구현 차이 |
+| 5 | `docs/ch-11/05-durability-and-recovery.md` | WAL 선행 기록, steal/no-force, checkpoint, redo/undo, group commit·fsync, crash recovery와 손상 경계 |
+| 6 | `docs/ch-11/06-database-replication.md` | 물리·논리 복제, bootstrap·log catch-up, 동기·비동기 commit, replication lag·stale read, failover·fencing과 복제 상태 진단 |
+| 7 | `docs/ch-11/07-sharding-and-data-placement.md` | partitioning과 sharding, range·hash·directory routing, shard key·hot shard, co-location·fan-out·global index, resharding과 배치 진단 |
+| 8 | `docs/ch-11/08-distributed-transactions.md` | distributed concurrency control과 atomic commit, 2PC 상태·durable decision, in-doubt·blocking·재시도, cross-shard isolation과 장애 진단 |
+| 9 | `docs/ch-11/09-database-paradigms-and-selection.md` | relational·key-value·wide-column·document·graph·search의 데이터 모델과 내부 메커니즘, 적합한 워크로드·비용·실무 사례 비교 |
 
-**실습 과제**: append-only 로그와 인덱스로 미니 KV 스토어를 구현하고, 실제 DB에서 격리 수준별 이상 현상을 재현하는 실험 리포트를 작성한다.
+**실습 과제**: 페이지·버퍼, 인덱스·스토리지 구조, 실행 계획, 동시성, WAL 복구를 계층별 미니 실험으로 재현한다. 같은 합성 워크로드에서 예측과 내부 계측을 대조하고, 실행 계획과 대기 증거를 근거로 성능·격리·내구성 문제를 진단하는 리포트를 작성한다.
 
 #### 챕터 12 — 가상화와 클라우드 (`docs/ch-12/`)
 
