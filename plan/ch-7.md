@@ -41,7 +41,7 @@
 | 자료구조의 메모리 배치(배열 vs 포인터 추적) | ch-1 `02-data-structures-in-memory.md` | 그 배치가 캐시에서 왜 갈리는지 원인 쪽을 담당 |
 | TLB·페이지 테이블·가상 주소 변환 | ch-8 `02-virtual-memory.md` | 캐시 미스 분류에서 "주소 변환에도 캐시(TLB)가 있다"는 연결만 |
 | 컨텍스트 스위치가 캐시·TLB를 오염시키는 비용 | ch-8 `01-processes-and-scheduling.md` | 캐시 워밍업 개념까지만 제공하고 측정은 ch-8 실습이 담당 |
-| 언어 수준 메모리 모델(happens-before, atomics API) | (커리큘럼 밖, 필요시 ch-8 동기화에서 최소한만) | 하드웨어 재정렬과 일관성 프로토콜까지만. 언어 명세의 메모리 모델은 다루지 않는다 |
+| 언어 수준 메모리 모델(happens-before, atomics API) | ch-8a `02-synchronization-and-memory-models.md` | 하드웨어 재정렬과 일관성 프로토콜까지만. 언어 수준의 계약은 ch-8a가 담당한다 |
 | 호출 규약·스택 프레임 | ch-6 `01-runtime-systems.md` | 언급만 |
 
 ### 다루지 않기로 결정한 것

@@ -41,6 +41,7 @@ Part 순서는 이론에서 응용으로 향하는 권장 순서일 뿐 Part 간
 | | 6 | 런타임과 메모리 | mark-sweep GC 구현과 힙 프로파일링 리포트 |
 | 3. 컴퓨터 시스템 | 7 | 컴퓨터 구조 | 캐시 효과 측정 벤치마크 리포트 |
 | | 8 | 운영체제 | 컨텍스트 스위치·I/O 모델 비용 측정 리포트 |
+| | 8a | 경쟁 상태와 동기화 | race condition 재현·검출과 동기화 프리미티브 비용 측정 리포트 |
 | | 9 | 네트워크 | 패킷 캡처 기반 TCP·HTTP 동작 분석 리포트 |
 | | 10 | 분산 시스템 | 리더 선출·로그 복제 시뮬레이터 |
 | | 11 | 데이터베이스 시스템 내부와 실행 진단 | 미니 스토리지 실험과 실행 계획·동시성 진단 리포트 |
@@ -225,6 +226,25 @@ Part 순서는 이론에서 응용으로 향하는 권장 순서일 뿐 Part 간
 | 3 | `docs/ch-8/03-file-systems-and-io.md` | VFS, 저널링, 페이지 캐시, 동기·비동기 I/O 모델(epoll, io_uring) |
 
 **실습 과제**: 컨텍스트 스위치 비용과 I/O 모델(블로킹, epoll 계열)별 처리량을 직접 측정하고 시스템 지표로 차이의 원인을 설명한다.
+
+#### 챕터 8a — 경쟁 상태와 동기화 (`docs/ch-8a/`)
+
+챕터 7의 캐시 일관성(하드웨어 층)과 챕터 11의 트랜잭션 동시성 제어(DB 층) 사이에서, 스레드와 공유 메모리 수준의 race condition을 담당한다. 챕터 8의 스레드·스케줄링 모델을 선수 지식으로 위임받는다.
+
+**학습 목표**
+
+- interleaving 모델로 공유 상태 접근의 가능한 실행 결과를 열거하고 race window를 식별한다.
+- data race와 race condition(원자성·순서 위반)을 구분하고 각각에 맞는 재현·탐지 방법을 선택한다.
+- happens-before 관계를 근거로 동기화 유무에 따라 허용되는 실행 결과를 판단한다.
+- mutex·조건 변수·atomic 중 지켜야 할 불변식에 맞는 프리미티브를 선택하고 그 비용을 경합 수준과 대기 방식(스핀·블로킹)으로 설명한다.
+
+| # | 문서 | 주요 내용 |
+|---|------|----------|
+| 0 | `docs/ch-8a/00-introduction.md` | 멀티스레드 코드가 가끔만 실패하는 이유, 순차 실행 직관이 깨지는 지점, 챕터 학습 지도 |
+| 1 | `docs/ch-8a/01-race-conditions-and-interleaving.md` | interleaving 실행 모델, 임계 구역과 불변식, data race와 race condition의 구분, check-then-act·read-modify-write 패턴, 스트레스 테스트·ThreadSanitizer 기반 재현·탐지 |
+| 2 | `docs/ch-8a/02-synchronization-and-memory-models.md` | mutex·조건 변수·세마포어·atomic, futex와 대기의 커널 비용, happens-before와 언어 메모리 모델, 락 순서와 데드락, 경합 수준별 락 비용, lock-free의 경계 |
+
+**실습 과제**: 카운터 소실과 check-then-act race를 재현하고 ThreadSanitizer로 data race를 검출한 뒤, mutex·atomic·per-thread 샤딩 세 구현의 경합 수준별 비용을 측정해 리포트로 정리한다.
 
 #### 챕터 9 — 네트워크 (`docs/ch-9/`)
 
